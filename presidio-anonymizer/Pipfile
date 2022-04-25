@@ -6,6 +6,8 @@ name = "pypi"
 [packages]
 flask = ">=1.1"
 pycryptodome = ">=3.10"
+flask-cors = "*"
+pyopenssl = "*"
 
 [dev-packages]
 pytest = "*"

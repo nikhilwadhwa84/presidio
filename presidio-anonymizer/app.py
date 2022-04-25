@@ -6,6 +6,7 @@ from pathlib import Path
 
 from flask import Flask, request, jsonify, Response
 from werkzeug.exceptions import BadRequest, HTTPException
+from flask_cors import CORS
 
 from presidio_anonymizer import AnonymizerEngine, DeanonymizeEngine
 from presidio_anonymizer.entities import InvalidParamException
@@ -39,6 +40,7 @@ class Server:
         self.anonymizer = AnonymizerEngine()
         self.deanonymize = DeanonymizeEngine()
         self.logger.info(WELCOME_MESSAGE)
+        CORS(self.app)
 
         @self.app.route("/health")
         def health() -> str:
@@ -116,4 +118,4 @@ class Server:
 if __name__ == "__main__":
     port = int(os.environ.get("PORT", DEFAULT_PORT))
     server = Server()
-    server.app.run(host="0.0.0.0", port=port)
+    server.app.run(host="0.0.0.0", port=port, ssl_context='adhoc')

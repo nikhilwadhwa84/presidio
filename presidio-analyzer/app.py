@@ -8,6 +8,7 @@ from typing import Tuple
 
 from flask import Flask, request, jsonify, Response
 from werkzeug.exceptions import HTTPException
+from flask_cors import CORS
 
 from presidio_analyzer.analyzer_engine import AnalyzerEngine
 from presidio_analyzer.analyzer_request import AnalyzerRequest
@@ -39,6 +40,7 @@ class Server:
         self.logger.info("Starting analyzer engine")
         self.engine = AnalyzerEngine()
         self.logger.info(WELCOME_MESSAGE)
+        CORS(self.app)
 
         @self.app.route("/health")
         def health() -> str:
@@ -128,4 +130,4 @@ class Server:
 if __name__ == "__main__":
     port = int(os.environ.get("PORT", DEFAULT_PORT))
     server = Server()
-    server.app.run(host="0.0.0.0", port=port)
+    server.app.run(host="0.0.0.0", port=port, ssl_context='adhoc')
